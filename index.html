@@ -15,12 +15,29 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background-color: #0a332c;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M0 0h10v10H0zM20 10h10v10H20zM40 20h10v10H40zM60 30h10v10H60zM10 40h10v10H10zM30 50h10v10H30zM50 60h10v10H50zM70 70h10v10H70z'/%3E%3Ccircle cx='15' cy='25' r='3'/%3E%3Ccircle cx='55' cy='15' r='2'/%3E%3Ccircle cx='35' cy='45' r='2.5'/%3E%3Ccircle cx='75' cy='55' r='2'/%3E%3Ccircle cx='25' cy='75' r='3'/%3E%3Ccircle cx='65' cy='5' r='2'/%3E%3Cpath d='M5 55l5-5 5 5-5 5zM45 35l5-5 5 5-5 5zM25 5l3-3 3 3-3 3zM65 45l4-4 4 4-4 4z'/%3E%3Cpath d='M70 20c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4zM10 70c0-1.5 1.5-3 3-3s3 1.5 3 3-1.5 3-3 3-3-1.5-3-3z' fill='none' stroke='%23ffffff' stroke-opacity='0.05' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E");
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
+        }
+
+        #emoji-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .emoji {
+            position: absolute;
+            user-select: none;
+            opacity: 0.15;
         }
 
         .container {
@@ -115,6 +132,7 @@
     </style>
 </head>
 <body>
+    <div id="emoji-background"></div>
     <div class="container">
         <header class="header">
             <img src="https://github.com/mdogwoop.png" alt="Profile picture of Mdogwoop" class="avatar">
@@ -136,5 +154,32 @@
             </a>
         </nav>
     </div>
+    <script>
+        const emojis = ['😀', '😎', '🚀', '💻', '🌟', '🎉', '🔥', '💡', '🎨', '🎵', '🍕', '☕', '🐶', '🐱', '🌈'];
+        const container = document.getElementById('emoji-background');
+        const emojiCount = 30;
+
+        for (let i = 0; i < emojiCount; i++) {
+            const el = document.createElement('div');
+            el.classList.add('emoji');
+            el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            // Random position
+            el.style.left = Math.random() * 100 + '%';
+            el.style.top = Math.random() * 100 + '%';
+            
+            // Random size
+            const size = Math.random() * 30 + 20; // 20px to 50px
+            el.style.fontSize = size + 'px';
+            
+            // Random rotation
+            el.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            // Random opacity
+            el.style.opacity = (Math.random() * 0.1 + 0.05).toString(); // 0.05 to 0.15
+
+            container.appendChild(el);
+        }
+    </script>
 </body>
 </html>
