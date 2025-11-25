@@ -452,7 +452,11 @@
 
         // Wait for font to load before showing background to prevent system emoji flash
         document.fonts.load('1em NotoEmoji').then(() => {
-            container.style.opacity = '1';
+            // Use a small delay to ensure the browser renders the initial opacity: 0 state
+            // This guarantees the fade-in animation plays even if the font is cached
+            setTimeout(() => {
+                container.style.opacity = '1';
+            }, 50);
         });
     </script>
 </body>
