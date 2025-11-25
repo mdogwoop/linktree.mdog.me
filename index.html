@@ -6,6 +6,28 @@
     <title>Mdogwoop | Links</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        :root {
+            --bg-color: #E89895;
+            --emoji-color: #E8C5AC;
+            --btn-bg: white;
+            --btn-text: #333;
+            --avatar-border: white;
+            --github-icon: #333;
+            --name-color: white;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #CF4F5C;
+                --emoji-color: #F2A17F;
+                --btn-bg: #2C2C2C;
+                --btn-text: white;
+                --avatar-border: #2C2C2C;
+                --github-icon: white;
+                --name-color: black;
+            }
+        }
+
         @font-face {
             font-family: 'NotoEmoji';
             src: url('NotoEmoji-Medium.ttf') format('truetype');
@@ -19,7 +41,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background-color: #0a332c;
+            background-color: var(--bg-color);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -42,7 +64,7 @@
         .emoji {
             position: absolute;
             user-select: none;
-            opacity: 0.15;
+            color: var(--emoji-color);
             font-family: 'NotoEmoji', sans-serif;
         }
 
@@ -62,13 +84,13 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            border: 4px solid white;
+            border: 4px solid var(--avatar-border);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             object-fit: cover;
         }
 
         .display-name {
-            color: white;
+            color: var(--name-color);
             font-size: 1.8rem;
             font-weight: 600;
             margin-top: 15px;
@@ -86,8 +108,8 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            background: white;
-            color: #333;
+            background: var(--btn-bg);
+            color: var(--btn-text);
             text-decoration: none;
             padding: 16px 24px;
             border-radius: 12px;
@@ -95,6 +117,8 @@
             font-weight: 500;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .link-button:hover {
@@ -117,7 +141,7 @@
         }
 
         .link-button.github i {
-            color: #333;
+            color: var(--github-icon);
         }
 
         .link-button.vrchat i {
@@ -130,6 +154,91 @@
 
         .link-button.telegram i {
             color: #0088cc;
+        }
+
+        /* Expandable Card Styles */
+        .link-button.eth-card {
+            flex-direction: column;
+            padding: 0;
+            cursor: pointer;
+            gap: 0;
+        }
+
+        .eth-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 24px;
+            width: 100%;
+        }
+
+        .eth-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .link-button.eth-card.expanded .eth-content {
+            max-height: 150px;
+            opacity: 1;
+            padding: 0 24px 20px 24px;
+        }
+
+        .eth-address-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            padding: 6px;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .eth-address-text {
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+            text-align: left;
+            background: transparent;
+            padding: 0 5px;
+            user-select: text;
+            cursor: text;
+            flex: 1;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .eth-address-container {
+                background: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .copy-btn {
+            padding: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            color: var(--btn-text);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(128, 128, 128, 0.1);
         }
 
         @media (max-width: 480px) {
@@ -153,8 +262,8 @@
     <div id="emoji-background"></div>
     <div class="container">
         <header class="header">
-            <img src="avatar.png" alt="Profile picture of Mdogwoop" class="avatar">
-            <h1 class="display-name">Mdogwoop</h1>
+            <img src="avatar.png" alt="Profile picture of mdogwoop" class="avatar">
+            <h1 class="display-name">mdogwoop</h1>
         </header>
 
         <nav class="links">
@@ -174,9 +283,42 @@
                 <i class="fab fa-github"></i>
                 <span>GitHub</span>
             </a>
+            
+            <div class="link-button eth-card" onclick="toggleEth(this)">
+                <div class="eth-header">
+                    <i class="fab fa-ethereum"></i>
+                    <span>Ethereum Address</span>
+                </div>
+                <div class="eth-content">
+                    <div class="eth-address-container">
+                        <div class="eth-address-text" id="ethAddress">0x0000000000000000000000000000000000000000</div>
+                        <button class="copy-btn" onclick="copyAddress(event)">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </nav>
     </div>
+
     <script>
+        function toggleEth(el) {
+            el.classList.toggle('expanded');
+        }
+
+        function copyAddress(event) {
+            event.stopPropagation();
+            const address = document.getElementById('ethAddress').innerText;
+            navigator.clipboard.writeText(address).then(() => {
+                const btn = event.currentTarget;
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+
         const emojis = ['😀', '😎', '🚀', '💻', '🌟', '🎉', '🔥', '💡', '🎨', '🎵', '🍕', '☕', '🐶', '🐱', '🌈'];
         const container = document.getElementById('emoji-background');
         
@@ -202,9 +344,6 @@
             // Random rotation
             el.style.transform = `rotate(${Math.random() * 360}deg)`;
             
-            // Random opacity
-            el.style.opacity = (Math.random() * 0.1 + 0.05).toString(); // 0.05 to 0.15
-
             container.appendChild(el);
         }
     </script>
