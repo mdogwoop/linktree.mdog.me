@@ -156,15 +156,19 @@
             color: #0088cc;
         }
 
+        .link-button.switch i {
+            color: #e60012;
+        }
+
         /* Expandable Card Styles */
-        .link-button.eth-card {
+        .link-button.expandable-card {
             flex-direction: column;
             padding: 0;
             cursor: pointer;
             gap: 0;
         }
 
-        .eth-header {
+        .card-header {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -173,7 +177,7 @@
             width: 100%;
         }
 
-        .eth-content {
+        .card-content {
             max-height: 0;
             opacity: 0;
             overflow: hidden;
@@ -185,13 +189,13 @@
             gap: 10px;
         }
 
-        .link-button.eth-card.expanded .eth-content {
-            max-height: 150px;
+        .link-button.expandable-card.expanded .card-content {
+            max-height: 300px; /* Increased for QR code */
             opacity: 1;
             padding: 0 24px 20px 24px;
         }
 
-        .eth-address-container {
+        .address-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -202,7 +206,7 @@
             gap: 10px;
         }
 
-        .eth-address-text {
+        .address-text {
             font-family: monospace;
             font-size: 0.85rem;
             word-break: break-all;
@@ -215,8 +219,43 @@
         }
 
         @media (prefers-color-scheme: dark) {
-            .eth-address-container {
+            .address-container {
                 background: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .switch-qr {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: block; /* Default visible on PC */
+        }
+
+        .switch-app-btn {
+            display: none; /* Default hidden on PC */
+            background-color: #e60012;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .switch-app-btn:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .switch-qr {
+                display: none; /* Hide QR on mobile */
+            }
+            .switch-app-btn {
+                display: block; /* Show button on mobile */
             }
         }
 
@@ -284,35 +323,54 @@
                 <span>GitHub</span>
             </a>
             
-            <div class="link-button eth-card" onclick="toggleEth(this)">
-                <div class="eth-header">
+            <div class="link-button expandable-card" onclick="toggleCard(this)">
+                <div class="card-header">
                     <i class="fab fa-ethereum"></i>
                     <span>Ethereum Address</span>
                 </div>
-                <div class="eth-content">
-                    <div class="eth-address-container">
-                        <div class="eth-address-text" id="ethAddress">0x3Ef8b78b35495Fb3A0B8824876D0079a32a18145</div>
-                        <button class="copy-btn" onclick="copyAddress(event)">
+                <div class="card-content">
+                    <div class="address-container">
+                        <div class="address-text" id="ethAddress">0x3Ef8b78b35495Fb3A0B8824876D0079a32a18145</div>
+                        <button class="copy-btn" onclick="copyText(event, 'ethAddress')">
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
+                </div>
+            </div>
+
+            <div class="link-button expandable-card switch" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Nintendo Switch</span>
+                </div>
+                <div class="card-content">
+                    <div class="address-container">
+                        <div class="address-text" id="switchCode">SW-0000-0000-0000</div>
+                        <button class="copy-btn" onclick="copyText(event, 'switchCode')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <img src="switch-qr.jpg" alt="Switch Friend Code QR" class="switch-qr">
+                    <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fsupport.nintendo.com%2Fswitch%2Ffriend_code%3Fid%3DSW-0000-0000-0000" class="switch-app-btn" target="_blank">
+                        Add via Switch App
+                    </a>
                 </div>
             </div>
         </nav>
     </div>
 
     <script>
-        function toggleEth(el) {
+        function toggleCard(el) {
             el.classList.toggle('expanded');
         }
 
-        function copyAddress(event) {
+        function copyText(event, elementId) {
             event.stopPropagation();
-            const address = document.getElementById('ethAddress').innerText;
-            navigator.clipboard.writeText(address).then(() => {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
                 const btn = event.currentTarget;
                 const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.innerHTML = '<i class="fas fa-check"></i>';
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
                 }, 2000);
