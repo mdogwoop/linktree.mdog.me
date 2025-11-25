@@ -110,6 +110,12 @@
             font-size: 1.4rem;
         }
 
+        .link-button img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
         .link-button.github i {
             color: #333;
         }
@@ -147,15 +153,11 @@
     <div id="emoji-background"></div>
     <div class="container">
         <header class="header">
-            <img src="https://github.com/mdogwoop.png" alt="Profile picture of Mdogwoop" class="avatar">
+            <img src="avatar.png" alt="Profile picture of Mdogwoop" class="avatar">
             <h1 class="display-name">Mdogwoop</h1>
         </header>
 
         <nav class="links">
-            <a href="https://github.com/mdogwoop" class="link-button github" target="_blank" rel="noopener noreferrer">
-                <i class="fab fa-github"></i>
-                <span>GitHub</span>
-            </a>
             <a href="https://vrchat.com/home/user/usr_63e4d692-1163-49bd-9821-85b18ac83f48" class="link-button vrchat" target="_blank" rel="noopener noreferrer">
                 <img src="vrc.png" alt="VRChat Logo">
                 <span>VRChat</span>
@@ -168,12 +170,19 @@
                 <i class="fab fa-telegram"></i>
                 <span>Telegram</span>
             </a>
+            <a href="https://github.com/mdogwoop" class="link-button github" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github"></i>
+                <span>GitHub</span>
+            </a>
         </nav>
     </div>
     <script>
         const emojis = ['😀', '😎', '🚀', '💻', '🌟', '🎉', '🔥', '💡', '🎨', '🎵', '🍕', '☕', '🐶', '🐱', '🌈'];
         const container = document.getElementById('emoji-background');
-        const emojiCount = 30;
+        
+        // Adjust count and size based on screen width
+        const isMobile = window.innerWidth <= 768;
+        const emojiCount = isMobile ? 15 : 50; // Fewer on mobile, more on PC
 
         for (let i = 0; i < emojiCount; i++) {
             const el = document.createElement('div');
@@ -184,8 +193,10 @@
             el.style.left = Math.random() * 100 + '%';
             el.style.top = Math.random() * 100 + '%';
             
-            // Random size
-            const size = Math.random() * 30 + 20; // 20px to 50px
+            // Random size based on device
+            const minSize = isMobile ? 25 : 20;
+            const sizeRange = isMobile ? 25 : 30; // 25-50px on mobile, 20-50px on PC
+            const size = Math.random() * sizeRange + minSize;
             el.style.fontSize = size + 'px';
             
             // Random rotation
